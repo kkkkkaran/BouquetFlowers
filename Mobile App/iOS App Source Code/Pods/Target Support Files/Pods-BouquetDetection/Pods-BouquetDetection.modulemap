@@ -1,0 +1,6 @@
+framework module Pods_BouquetDetection {
+  umbrella header "Pods-BouquetDetection-umbrella.h"
+
+  export *
+  module * { export * }
+}
