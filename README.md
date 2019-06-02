@@ -1,4 +1,10 @@
-# BouquetFlowers
+# Flower Detection and Classification using Machine Learning: Mobile App
+# Source for University of Melbourne COMP90019/COMP90055 projects
+
+Karan Katnani (kkkkkaran) - kkatnani@student.unimelb.edu.au - 920130 
+Andi Hartarto Wardana Samijono (andi23) - asamijono@student.unimelb.edu.au - 979056  
+Min Xue - mxue2@student.unimelb.edu.au (mxue2) - mxue2@student.unimelb.edu.au - 897082
+
 Link to Saved Models for serving: https://drive.google.com/open?id=1knRnEFaTUX5Z1PGNKa0jRUF5ZS2pn80_
 Link to Train and Test Datasets: https://drive.google.com/open?id=1dFKk7zcU6tDnoNp1OTVdfI8et11-irzs
 
