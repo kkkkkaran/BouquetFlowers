@@ -43,6 +43,7 @@ gcloud ml-engine jobs submit training `whoami`_object_detection_ssd_fpn_resnet_`
 --tpu_zone us-central1 \
 --pipeline_config_path=gs://${YOUR_GCS_BUCKET}/data/pipeline.config
 
+### For the evaluation step use 
 
 gcloud ml-engine jobs submit training `whoami`_object_detection_eval_validation_fpn_resnet_`date +%s` \
 --job-dir=gs://${YOUR_GCS_BUCKET}/train \
