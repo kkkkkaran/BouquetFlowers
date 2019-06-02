@@ -1,0 +1,8 @@
+{
+  "firebase": {
+    "projectId": "bouquetdetectionproject",
+    "databaseURL": "https://bouquetdetectionproject.firebaseio.com",
+    "storageBucket": "bouquetdetectionproject.appspot.com",
+    "cloudResourceLocation": "us-central"
+  }
+}
