@@ -5,7 +5,7 @@ Contribution by Me (kkkkkaran)
 
 -Small changes have been in the source code to work with a slightly different input annotation format, which is generated using modScript.py, found in the Data Preparation section
 
--Added a script [savedModel.py] to generate SavedModel from frozen inference graph, for Tensorflow serving.
+-Added a script [saveModel.py] to generate SavedModel from frozen inference graph, for Tensorflow serving.
 
 
 ## part 1. Introduction
@@ -184,7 +184,7 @@ Non-max suppression uses the very important function called **"Intersection over
 
 ![image](./docs/images/iou.png)
 
-If you want more details, read the fucking source code and original paper or contact with 
+If you want more details, read the source code and original paper or contact with 
 [me](https://github.com/YunYang1994)！
 
 ## part 5. Other Implementations
