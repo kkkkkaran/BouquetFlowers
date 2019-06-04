@@ -19,7 +19,7 @@ Link to Train and Test Datasets: https://drive.google.com/open?id=1dFKk7zcU6tDno
 GCP: Google Cloud Platform
 
 TensorFlow YOLO:
-- The system was deployed on a GCP Instance with 4vCPUs 16GB Memory and an Nvidia Tesla P4 GPU. Implementation guide is contained within the folder. 
+- The model was trained and tested on a GCP Instance with 4vCPUs 16GB Memory and an Nvidia Tesla P4 GPU. Implementation guide is contained within the folder. 
 
 GCP TPU Training for Object Detection
 - Instructions on training pre-trained models for transfer learning using Google's TPU and solutions to road blocks due to Tensorflow changes.
