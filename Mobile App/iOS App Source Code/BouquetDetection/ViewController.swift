@@ -3,11 +3,11 @@
 //  BouquetDetection
 //
 //  Created by MinXue on 24/4/19.
-//  Copyright © 2019 Min Xue. All rights reserved.
+//  Completed by Karan Katnani. Current Version 4/6/19.
+//  Copyright © 2019 Karan Katnani. All rights reserved.
 //
 
 import UIKit
-//import SwiftyJSON
 import Firebase
 
 class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate  {
@@ -16,32 +16,39 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
     var firestore: Firestore!
     var modelChoice:String?
     var pickedImgInfo:[UIImagePickerController.InfoKey: Any]?
+    let cameraPicker = UIImagePickerController()
     
     @IBOutlet weak var modelSelect: UIButton!
     @IBOutlet weak var ImageView: UIImageView!
     @IBOutlet weak var ResultList: UILabel!
-    
-    
     @IBOutlet weak var flowerListView: UITextView!
     
-    
-    let cameraPicker = UIImagePickerController()
-    
+    //Function called as soon as view loads
     override func viewDidLoad() {
         super.viewDidLoad()
+        if !Reachability.isConnectedToNetwork(){
+            let alert=UIAlertController.init(title: "Alert", message: "No Internet Connection Detected! The App may not work as intended", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+                NSLog("The \"OK\" alert occured.")
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
         self.modelSelect.isEnabled = false
         self.flowerListView.isEditable = false
         self.flowerListView.text=("How to Use: \n 1. Select or Click an Image \n 2. Select a Model")
         storage = Storage.storage()
         firestore = Firestore.firestore()
-        // Do any additional setup after loading the view.
-        cameraPicker.delegate = self as! UIImagePickerControllerDelegate & UINavigationControllerDelegate
+        cameraPicker.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
     }
+    
+    //inherited from parent function to free memory resources. NEEDS TO BE DEVELOPED
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    //function to click photo from within the app
     @IBAction func TakePhoto(_ sender: Any) {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             return
@@ -53,15 +60,19 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
         present(cameraPicker, animated: true)
     }
     
+    //function to open user photo library, allowing user to select picture
     @IBAction func PhotoLibrary(_ sender: Any) {
         cameraPicker.sourceType = .photoLibrary
         present(cameraPicker, animated: true)
     }
 
+    //function to dismiss photo library, if users cancels action
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
     
+    
+    //function to take action after user selects an image for detection
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
             ImageView.image = userPickedImage
@@ -78,6 +89,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
         
     }
     
+    //function to save image clicked within the app, to photo gallery
     @objc func saveImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let error = error {
             // we got back an error!
@@ -85,7 +97,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
         } else {
-            let ac = UIAlertController(title: "Saved!", message: "Please re-select the image from photo library to make detection.", preferredStyle: .alert)
+            let ac = UIAlertController(title: "Saved!", message: "Please re-select the image from photo library to start detection.", preferredStyle: .alert)
             self.flowerListView.text=("How to Use: \n 1. Please re-select the image from photo library  \n 2. Select a Model")
             self.modelSelect.isEnabled = false
             
@@ -95,10 +107,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
     }
     
     
+    //function to provide options of models to user
     @IBAction func ModelSearch(_ sender: Any) {
-        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
         alert.addAction(UIAlertAction(title: "SSD Depth Quantized", style: .default , handler:{ (UIAlertAction)in
             self.modelChoice = "model1"
             self.upload(remoteDatabase: "predicted_images")
@@ -112,35 +123,25 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
             print("User chooses YOLO model")
             self.flowerListView.text=("Uploading!")
         }))
-        
-        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-        
         present(alert,animated: true)
     }
     
     
-    
+    //function to upload image to firebase, and add an async listener for results
     func upload(remoteDatabase: String){
-        //                self.recogName.text = "Waiting for uploading image to server..."
-        //                self.discoverImageView.image = userPickedImage
         let imageURL = pickedImgInfo?[UIImagePickerController.InfoKey.imageURL] as! URL
         let imageName = imageURL.lastPathComponent
         let storageRef = storage.reference().child("images").child(imageName)
         guard let image = pickedImgInfo?[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        let imageData:NSData = image.pngData()! as NSData
-        let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
-        print(strBase64)
         storageRef.putFile(from: imageURL, metadata: nil) { metadata, error in
             if let error = error {
-                //                        self.recogName.text = "Upload Failed!"
-                print(11111111111111)
+                self.flowerListView.text=("Uploaded Failed! \n Please try again.")
                 print(error)
-            } else {
-                //                        self.recogName.text = "Upload Successfully!"
+            }
+            else {
                 print("upload success!")
                 self.flowerListView.text=("Uploaded successfully \n Waiting for results")
-                
                 self.firestore.collection(remoteDatabase).document(imageName)
                     .addSnapshotListener { documentSnapshot, error in
                         if let error = error {
@@ -151,7 +152,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
                                 let imageData = (documentSnapshot?.data())
                                 self.visualizePrediction(imgData: imageData)
                             } else {
-                                //                                        self.recogName.text = "Waiting for prediction data..."
                                 print("waiting for prediction data...")
                             }
                         }
@@ -160,51 +160,41 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
         }
     }
     
+    //function to display detection results
     func visualizePrediction(imgData: [String: Any]?) {
-        //        print("11111111111")
-        print("i am in the function !")
-        print(imgData)
-        let confidence = (imgData!["confidence"] as! String).components(separatedBy:",")
-        let label_id = (imgData!["label_name"] as! String).components(separatedBy:",")
-        print(confidence)
-        print(label_id)
-        var output = ""
-        var i=0
-        for data in confidence{
-            if i==0{
-                i=1
-                continue
-                
-            }
-                
-            output +=  String(i) + ":" + " " + label_id[i] + " " + data + "\n"
-            i+=1
-        }
-        print(output)
-        self.flowerListView.text=output
-        
+        print(imgData!)
         if (imgData!["image_path"] as! String).isEmpty {
-            //            self.recogName.text = "No Bouquet found 😢"
-            //            requestName = ""
-        } else {
+            self.flowerListView.text="No Flower Found"
+        }
+        else{
+            let confidence = (imgData!["confidence"] as! String).components(separatedBy:",")
+            let label_id = (imgData!["label_name"] as! String).components(separatedBy:",")
+            print(confidence)
+            print(label_id)
+            var output = ""
+            var i=0
+            for data in confidence{
+                if i==0{
+                    i=1
+                    continue
+                }
+                output +=  String(i) + ":" + " " + label_id[i] + " " + data + "\n"
+                i+=1
+            }
+            print(output)
+            self.flowerListView.text=output
             let predictedImgRef = storage.reference(withPath: imgData!["image_path"] as! String)
             predictedImgRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
                 if let error = error {
                     print(error)
-                } else {
+                }
+                else {
                     let image = UIImage(data: data!)
-                    //                    pickedImage = image
-                    //                    self.poisonousLabel.text = Text
-                    //                    self.recogName.text = recog_name
-                    //                    self.accuracyLabel.text = "\(String(format: "%.2f", confidence))% confidence"
                     self.ImageView.image = image
                 }
             }
-        }
         
+        }
     }
-
-
-    
 
 }

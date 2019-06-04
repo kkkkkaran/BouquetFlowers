@@ -14,6 +14,7 @@
 		19F9E050226FE20A0021C679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19F9E04E226FE20A0021C679 /* LaunchScreen.storyboard */; };
 		19F9E058226FEE1D0021C679 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19F9E057226FEE1D0021C679 /* GoogleService-Info.plist */; };
 		CB50B6F5474CC55E67365FBA /* Pods_BouquetDetection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90C3A7601BE721C76BE341BE /* Pods_BouquetDetection.framework */; };
+		FF5D3C7E22A5FE1200456908 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D3C7D22A5FE1200456908 /* Reachability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		5476E28357B2979114269CC0 /* Pods-BouquetDetection.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BouquetDetection.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BouquetDetection/Pods-BouquetDetection.debug.xcconfig"; sourceTree = "<group>"; };
 		90C3A7601BE721C76BE341BE /* Pods_BouquetDetection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BouquetDetection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD16E9DB858EE413C6F11E51 /* Pods-BouquetDetection.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BouquetDetection.release.xcconfig"; path = "Pods/Target Support Files/Pods-BouquetDetection/Pods-BouquetDetection.release.xcconfig"; sourceTree = "<group>"; };
+		FF5D3C7D22A5FE1200456908 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 			children = (
 				19F9E057226FEE1D0021C679 /* GoogleService-Info.plist */,
 				19F9E045226FE2090021C679 /* AppDelegate.swift */,
+				FF5D3C7D22A5FE1200456908 /* Reachability.swift */,
 				19F9E047226FE2090021C679 /* ViewController.swift */,
 				19F9E049226FE2090021C679 /* Main.storyboard */,
 				19F9E04C226FE20A0021C679 /* Assets.xcassets */,
@@ -230,6 +233,7 @@
 			files = (
 				19F9E048226FE2090021C679 /* ViewController.swift in Sources */,
 				19F9E046226FE2090021C679 /* AppDelegate.swift in Sources */,
+				FF5D3C7E22A5FE1200456908 /* Reachability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
