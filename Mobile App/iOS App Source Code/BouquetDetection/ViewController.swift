@@ -18,6 +18,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
     var pickedImgInfo:[UIImagePickerController.InfoKey: Any]?
     let cameraPicker = UIImagePickerController()
     
+    @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var imagePickButton: UIBarButtonItem!
     @IBOutlet weak var modelSelect: UIButton!
     @IBOutlet weak var ImageView: UIImageView!
     @IBOutlet weak var ResultList: UILabel!
@@ -130,12 +132,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
     
     //function to upload image to firebase, and add an async listener for results
     func upload(remoteDatabase: String){
+        self.modelSelect.isEnabled = false
+        self.cameraButton.isEnabled = false
+        self.imagePickButton.isEnabled = false
         let imageURL = pickedImgInfo?[UIImagePickerController.InfoKey.imageURL] as! URL
         let imageName = imageURL.lastPathComponent
         let storageRef = storage.reference().child("images").child(imageName)
         guard let image = pickedImgInfo?[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
         storageRef.putFile(from: imageURL, metadata: nil) { metadata, error in
             if let error = error {
+                self.modelSelect.isEnabled = true
+                self.cameraButton.isEnabled = true
+                self.imagePickButton.isEnabled = true
                 self.flowerListView.text=("Uploaded Failed! \n Please try again.")
                 print(error)
             }
@@ -162,6 +170,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate,UIImagePi
     
     //function to display detection results
     func visualizePrediction(imgData: [String: Any]?) {
+        self.modelSelect.isEnabled = true
+        self.cameraButton.isEnabled = true
+        self.imagePickButton.isEnabled = true
         print(imgData!)
         if (imgData!["image_path"] as! String).isEmpty {
             self.flowerListView.text="No Flower Found"

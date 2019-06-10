@@ -97,7 +97,9 @@
                     <connections>
                         <outlet property="ImageView" destination="Hw5-5t-XuO" id="3bA-z3-6QT"/>
                         <outlet property="ResultList" destination="C3O-MR-5vs" id="Lk1-GM-Muz"/>
+                        <outlet property="cameraButton" destination="jYP-AS-Ag6" id="GIW-jY-tDN"/>
                         <outlet property="flowerListView" destination="Zqq-5E-cXe" id="Jro-H8-X55"/>
+                        <outlet property="imagePickButton" destination="bMJ-I4-t0W" id="QEu-69-ODP"/>
                         <outlet property="modelSelect" destination="FxT-kd-XpM" id="07k-Ck-M0A"/>
                     </connections>
                 </viewController>
